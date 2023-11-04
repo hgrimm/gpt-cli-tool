@@ -55,6 +55,7 @@ gpt-cli-tool Find files larger than 42kB in the current directory
 
 ```
 Looks insanely complicated? Don't panic. The answer is ...
+number of tokens used (total_tokens): 99.0
 find . -type f -size +42k
 Run? (y/n) 
 ```
@@ -73,6 +74,7 @@ gpt-cli-tool -v -m gpt-4 "Find files larger than 42kB in the current directory"
 2023/11/04 09:31:31 result:
 map[string]interface {}{"choices":[]interface {}{map[string]interface {}{"finish_reason":"stop", "index":0, "message":map[string]interface {}{"content":"find . -type f -size +42k", "role":"assistant"}}}, "created":1.69908669e+09, "id":"chatcmpl-8H6Ly33o9R0WevdQzXhNOCQd17mTQ", "model":"gpt-4-0613", "object":"chat.completion", "usage":map[string]interface {}{"completion_tokens":10, "prompt_tokens":90, "total_tokens":100}}
 Looks insanely complicated? Don't panic. The answer is ...
+number of tokens used (total_tokens): 100.0
 find . -type f -size +42k
 Run? (y/n) 
 ```
