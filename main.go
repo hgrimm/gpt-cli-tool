@@ -43,6 +43,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/fatih/color"
 	ps "github.com/mitchellh/go-ps"
 )
 
@@ -54,7 +55,7 @@ var (
 
 const (
 	version    = "0.1"
-	apiKeyInfo = "Goto https://platform.openai.com/account/api-keys to get your API key. Set the API key on CLI by 'export OPENAI_API_KEY=key' on Linux and MacOS\nor $Env:OPENAI_API_KEY = 'key' on Windows PowerShell"
+	apiKeyInfo = "Goto https://platform.openai.com/account/api-keys to get your API key. Set the API key on CLI by 'export OPENAI_API_KEY=key' on Linux and MacOS or $Env:OPENAI_API_KEY = 'key' on Windows PowerShell\n\n"
 )
 
 func init() {
@@ -209,7 +210,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s-%s by Herwig Grimm <herwig.grimm@gmail.com>\n\n", thisCommand, version)
 		fmt.Fprintf(os.Stderr, "Usage: "+thisCommand+" [-v] [-m <model>] <pseudo command>\n\n")
 		fmt.Fprintf(os.Stderr, "Command requires API key from OpenAI. "+apiKeyInfo)
-		fmt.Fprintf(os.Stderr, "Options:")
+		fmt.Fprintf(os.Stderr, "Options:\n")
 		flag.PrintDefaults()
 	}
 
@@ -246,7 +247,8 @@ func main() {
 	}
 
 	command := makeCommand(pseudo, parentProcessName)
-	fmt.Printf("Looks insanely complicated? Don't panic. The answer is ...\n%s\n", command)
+	fmt.Printf("Looks insanely complicated? Don't panic. The answer is ...\n")
+	color.Cyan(command)
 
 	var confirmation string
 	fmt.Print("Run? (y/n) ")
