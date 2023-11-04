@@ -18,7 +18,7 @@ The source code is hosted on GitHub: [https://github.com/hgrimm/gpt-cli-tool](ht
 
 ## Ideas for extensions
 
-- Consideration of a sanitised command history for more context
+- Add a sanitised command history for more context in the GPT prompt
 - Better API error handling
 
 
