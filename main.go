@@ -262,7 +262,6 @@ func main() {
 	if confirmation == "y" {
 		switch runtime.GOOS {
 		case "windows":
-			// switch case on parentProcessName ditinct windows shells
 			switch parentProcessName {
 			case "powershell.exe":
 				cmd = exec.Command("powershell.exe", "-c", command)
@@ -273,7 +272,6 @@ func main() {
 				os.Exit(1)
 			}
 		default: //Mac & Linux
-			// golang switch case on parentProcessName
 			switch parentProcessName {
 			case "zsh":
 				cmd = exec.Command("zsh", "-c", command)

@@ -7,12 +7,20 @@ Gpt-cli-tool is a command-line tool that translates pseudo-commands into executa
 
 The source code is hosted on GitHub: [https://github.com/hgrimm/gpt-cli-tool](https://github.com/hgrimm/gpt-cli-tool)
 
+
 ## Features
 
 - Transforms pseudo-commands into executable shell commands.
 - Supports multiple operating system platforms and command shells.
 - Uses OpenAI's powerful language models for command interpretation.
 - Easy to deploy due to very low dependencies as the command is a single static binary Golang file.
+
+
+## Ideas for extensions
+
+- Consideration of a sanitised command history for more context
+- Better API error handling
+
 
 ## Installation
 
