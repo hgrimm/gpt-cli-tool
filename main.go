@@ -120,11 +120,11 @@ type FunctionDefinition struct {
 	Parameters any `json:"parameters"`
 }
 
-func makeCommand(pseudoCommand, commandShell string) string {
+func makeCommand(pseudoCommand, commandShell string) (string, map[string]interface{}) {
 	apiKey := os.Getenv("OPENAI_API_KEY")
 	// check if OPENAI_API_KEY is set
 	if apiKey == "" {
-		fmt.Println("Error: OPENAI_API_KEY is not set. " + apiKeyInfo)
+		fmt.Printf("Error: OPENAI_API_KEY is not set. %s", apiKeyInfo)
 		os.Exit(1)
 	}
 	debugPrintf("OPENAI_API_KEY: %s", apiKey)
@@ -193,8 +193,10 @@ func makeCommand(pseudoCommand, commandShell string) string {
 	firstChoice := choices[0].(map[string]interface{})
 	message := firstChoice["message"].(map[string]interface{})
 	content := message["content"].(string)
+	usage := result["usage"].(map[string]interface{})
+	debugPrintf("usage:\n%#v\n", usage)
 
-	return content
+	return content, usage
 }
 
 func main() {
@@ -246,8 +248,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	command := makeCommand(pseudo, parentProcessName)
+	command, usage := makeCommand(pseudo, parentProcessName)
 	fmt.Printf("Looks insanely complicated? Don't panic. The answer is ...\n")
+	fmt.Printf("number of tokens used (total_tokens): %.1f\n", usage["total_tokens"])
 	color.Cyan(command)
 
 	var confirmation string
