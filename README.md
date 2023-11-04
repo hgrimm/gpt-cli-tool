@@ -29,6 +29,8 @@ Before installing `gpt-cli-tool`, make sure you have Go installed on your system
 ```bash
 git clone https://github.com/hgrimm/gpt-cli-tool.git
 cd gpt-cli-tool
+go mod init grimm.world/gpt-cli-tool
+go mod tidy
 go build
 ```
 
