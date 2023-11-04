@@ -38,7 +38,7 @@ The API keys can be generated at [here](https://platform.openai.com/account/api-
 Run the tool from the command line. The environment variable OPENAI_API_KEY must be set with the API key.
 
 ```sh
-gpt-cli-tool [options] <pseudo command
+gpt-cli-tool [options] <pseudo command>
 ```
 
 ## Options
