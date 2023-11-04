@@ -36,7 +36,8 @@ The API keys can be generated at [here](https://platform.openai.com/account/api-
 Run the tool from the command line. The environment variable OPENAI_API_KEY must be set with the API key.
 
 ```sh
-gpt-cli-tool [options] &lt;pseudo command&gt;```
+gpt-cli-tool [options] <pseudo command
+```
 
 ## Options
 
@@ -60,7 +61,7 @@ This tool was inspired by the [Unconventional Coding YouTube channel](https://ww
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
