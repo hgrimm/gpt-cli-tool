@@ -60,7 +60,7 @@ const (
 
 func init() {
 	flag.BoolVar(&verbose, "v", false, "verbose")
-	flag.StringVar(&model, "m", "gpt-3.5-turbo", "OpenAI model (gpt-3.5-turbo, gpt-4, ...)\nFor further information, refer to https://platform.openai.com/docs/models/overview")
+	flag.StringVar(&model, "m", "gpt-4", "OpenAI model (gpt-3.5-turbo, gpt-4, ...)\nFor further information, refer to https://platform.openai.com/docs/models/overview")
 	flag.BoolVar(&displayVersion, "V", false, "display version")
 }
 

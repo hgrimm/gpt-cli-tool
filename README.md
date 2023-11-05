@@ -13,13 +13,17 @@ The source code is hosted on GitHub: [https://github.com/hgrimm/gpt-cli-tool](ht
 - Transforms pseudo-commands into executable shell commands.
 - Supports multiple operating system platforms and command shells.
 - Uses OpenAI's powerful language models for command interpretation.
-- Easy to deploy due to very low dependencies as the command is a single static binary Golang file.
+- Use of go language for ease of deployment due to very low dependencies as the command is a single static binary file.
 
+## Demo
+
+![Demo](gpt-cli-tool.gif)
 
 ## Ideas for extensions
 
 - Add a sanitised command history for more context in the GPT prompt
 - Better API error handling
+- Add command to command history (Commands do not currently appear in the command history)
 
 
 ## Installation
