@@ -1,0 +1,17 @@
+gpt-cli-tool add a iptables firewall rule to allow incoming TCP traffic on port 8888
+gpt-cli-tool create a persistent command alias for 'gpt-cli-tool -m gpt-4' with the name gpt4
+gpt-cli-tool define environment variable var1 with 'start' as value
+gpt-cli-tool echo date only in us format
+gpt-cli-tool is SE Linux enabled?
+gpt-cli-tool find all mp4 files
+gpt-cli-tool find files larger than 5 kilobytes in size in the current directory
+gpt-cli-tool find go files larger than 5 kilobytes in size in golang/ folder
+gpt-cli-tool find mp4 files larger than 50 megabytes in size in the /Users/grh/Documents folder
+gpt-cli-tool free disk space in human readable format
+gpt-cli-tool show all processes named ncpa
+gpt-cli-tool mount device /dev/sdb1 to /mnt/usb
+gpt-cli-tool os version
+gpt-cli-tool search in file /var/log/messages for entries from 6:30am on 1 June this year
+gpt-cli-tool search in file /var/log/messages for string info
+gpt-cli-tool use tar to compress the gpt-cli-tool folder exclude the .git subdirectory
+gpt-cli-tool make a compressed backup of the mysql database demodata using pipe viewer to display progress.
