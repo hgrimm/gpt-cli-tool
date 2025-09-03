@@ -5,8 +5,8 @@ Licensed under the MIT License. See LICENSE file in the repository root for full
 https://github.com/hgrimm/gpt-cli-tool
 
 Author: Herwig Grimm <herwig.grimm@gmail.com>
-Version: 0.1
-Date: November 3, 2023
+Version: 0.2
+Date: September 3, 2025
 
 Usage: gpt-cli-tool [options] <pseudo command>
 
