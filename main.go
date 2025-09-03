@@ -5,8 +5,8 @@ Licensed under the MIT License. See LICENSE file in the repository root for full
 https://github.com/hgrimm/gpt-cli-tool
 
 Author: Herwig Grimm <herwig.grimm@gmail.com>
-Version: 0.2
-Date: Sep 3, 2025
+Version: 0.1
+Date: November 3, 2023
 
 Usage: gpt-cli-tool [options] <pseudo command>
 
@@ -51,17 +51,19 @@ var (
 	verbose        bool
 	displayVersion bool
 	model          string
+	listModels     bool
 )
 
 const (
-	version    = "0.1"
+	version    = "0.2"
 	apiKeyInfo = "Goto https://platform.openai.com/account/api-keys to get your API key. Set the API key on CLI by 'export OPENAI_API_KEY=key' on Linux and MacOS or $Env:OPENAI_API_KEY = 'key' on Windows PowerShell\n\n"
 )
 
 func init() {
 	flag.BoolVar(&verbose, "v", false, "verbose")
-	flag.StringVar(&model, "m", "gpt-4", "OpenAI model (gpt-3.5-turbo, gpt-4, ...)\nFor further information, refer to https://platform.openai.com/docs/models/overview")
+	flag.StringVar(&model, "m", "gpt-5", "OpenAI model (gpt-3.5-turbo, gpt-4, ...)\nFor further information, refer to https://platform.openai.com/docs/models/overview")
 	flag.BoolVar(&displayVersion, "V", false, "display version")
+	flag.BoolVar(&listModels, "L", false, "list available models")
 }
 
 func debugPrintf(format string, args ...interface{}) {
@@ -71,16 +73,18 @@ func debugPrintf(format string, args ...interface{}) {
 }
 
 type ChatCompletionRequest struct {
-	Model            string                  `json:"model"`
-	Messages         []ChatCompletionMessage `json:"messages"`
-	MaxTokens        int                     `json:"max_tokens,omitempty"`
-	Temperature      float32                 `json:"temperature,omitempty"`
-	TopP             float32                 `json:"top_p,omitempty"`
-	N                int                     `json:"n,omitempty"`
-	Stream           bool                    `json:"stream,omitempty"`
-	Stop             []string                `json:"stop,omitempty"`
-	PresencePenalty  float32                 `json:"presence_penalty,omitempty"`
-	FrequencyPenalty float32                 `json:"frequency_penalty,omitempty"`
+	Model    string                  `json:"model"`
+	Messages []ChatCompletionMessage `json:"messages"`
+	// MaxTokens        int                     `json:"max_tokens,omitempty"`
+	// change for gpt-5
+	MaxCompletionTokens int      `json:"max_completion_tokens,omitempty"`
+	Temperature         float32  `json:"temperature,omitempty"`
+	TopP                float32  `json:"top_p,omitempty"`
+	N                   int      `json:"n,omitempty"`
+	Stream              bool     `json:"stream,omitempty"`
+	Stop                []string `json:"stop,omitempty"`
+	PresencePenalty     float32  `json:"presence_penalty,omitempty"`
+	FrequencyPenalty    float32  `json:"frequency_penalty,omitempty"`
 	// LogitBias is must be a token id string (specified by their token ID in the tokenizer), not a word string.
 	// incorrect: `"logit_bias":{"You": 6}`, correct: `"logit_bias":{"1639": 6}`
 	// refs: https://platform.openai.com/docs/api-reference/chat/create#chat/create-logit_bias
@@ -120,6 +124,73 @@ type FunctionDefinition struct {
 	Parameters any `json:"parameters"`
 }
 
+func readModells() {
+	apiKey := os.Getenv("OPENAI_API_KEY")
+	// check if OPENAI_API_KEY is set
+	if apiKey == "" {
+		fmt.Printf("Error: OPENAI_API_KEY is not set. %s", apiKeyInfo)
+		os.Exit(1)
+	}
+	debugPrintf("OPENAI_API_KEY: %s", apiKey)
+	// Erstelle einen neuen HTTP-Client
+	client := &http.Client{Timeout: 10 * time.Second}
+
+	// Erstelle eine neue GET-Anfrage
+	req, err := http.NewRequest("GET", "https://api.openai.com/v1/models", nil)
+	if err != nil {
+		fmt.Println("Fehler beim Erstellen der Anfrage:", err)
+		return
+	}
+
+	// Füge erforderliche Header hinzu
+	req.Header.Add("Authorization", "Bearer "+apiKey)
+	req.Header.Add("Content-Type", "application/json")
+
+	// Sende die Anfrage
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Fehler beim Senden der Anfrage:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Lese den Antwortinhalt
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Fehler beim Lesen der Antwort:", err)
+		return
+	}
+
+	// Überprüfe den HTTP-Statuscode
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("HTTP-Fehlercode:", resp.StatusCode)
+		fmt.Println(string(bodyBytes))
+		return
+	}
+
+	// Parsen der JSON-Antwort
+	var result map[string]interface{}
+	err = json.Unmarshal(bodyBytes, &result)
+	if err != nil {
+		fmt.Println("Fehler beim Parsen von JSON:", err)
+		return
+	}
+
+	// Modelle ausgeben
+	if data, ok := result["data"].([]interface{}); ok {
+		fmt.Println("Verfügbare Modelle:")
+		for _, model := range data {
+			if modelMap, ok := model.(map[string]interface{}); ok {
+				if id, ok := modelMap["id"].(string); ok {
+					fmt.Println("- " + id)
+				}
+			}
+		}
+	} else {
+		fmt.Println("Keine Modelle gefunden.")
+	}
+}
+
 func makeCommand(pseudoCommand, commandShell string) (string, map[string]interface{}) {
 	apiKey := os.Getenv("OPENAI_API_KEY")
 	// check if OPENAI_API_KEY is set
@@ -147,7 +218,7 @@ func makeCommand(pseudoCommand, commandShell string) (string, map[string]interfa
 					pseudoCommand + "\n\nRespond only with the command.",
 			},
 		},
-		MaxTokens: 1000,
+		MaxCompletionTokens: 1000,
 	}
 
 	data, err := json.Marshal(payload)
@@ -220,6 +291,11 @@ func main() {
 
 	if displayVersion {
 		fmt.Println("Version: " + version)
+		os.Exit(0)
+	}
+
+	if listModels {
+		readModells()
 		os.Exit(0)
 	}
 
